@@ -7,6 +7,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
       - uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
@@ -17,6 +19,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
       - uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
@@ -25,9 +29,11 @@ jobs:
       - id: validate-screenshot-test
         run: ./gradlew validateScreenshotTest
         continue-on-error: true
-      - run: ./gradlew updateScreenshotTest
+      - id: update-screenshot-test
+        run: ./gradlew updateScreenshotTest
         if: steps.validate-screenshot-test.outcome == 'failure'
       - name: Commit screenshot test changes
+        if: steps.update-screenshot-test.outcome == 'success'
         run: |
           git config --global user.name "${GITHUB_ACTOR}"
           git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
