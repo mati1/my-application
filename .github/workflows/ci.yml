@@ -13,3 +13,18 @@ jobs:
           java-version: '17'
           cache: 'gradle'
       - run: ./gradlew build
+  screenshot-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'gradle'
+      - id: validate-screenshot-test
+        run: ./gradlew validateScreenshotTest
+        continue-on-error: true
+      - run: ./gradlew updateScreenshotTest
+        if: steps.validate-screenshot-test.outcome == 'failure'
+
