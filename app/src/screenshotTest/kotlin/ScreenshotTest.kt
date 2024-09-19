@@ -7,5 +7,5 @@ import androidx.compose.ui.tooling.preview.Preview
 @Composable
 @Preview
 fun someTest(){
-    BasicText("ASDASDASDASD")
+    BasicText("ASDASDASDASDF")
 }
