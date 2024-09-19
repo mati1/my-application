@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.compose.compiler)
-    id("com.android.compose.screenshot") version "0.0.1-alpha06"
+    id("com.android.compose.screenshot") version "0.0.1-alpha07"
 }
 
 android {
