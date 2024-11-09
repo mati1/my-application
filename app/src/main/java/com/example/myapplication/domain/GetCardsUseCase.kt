@@ -7,5 +7,5 @@ class GetCardsUseCase @Inject constructor(
     private val repository: CardRepository
 ) {
 
-    operator fun invoke() = repository.cards()
+    operator fun invoke() = repository.cards
 }

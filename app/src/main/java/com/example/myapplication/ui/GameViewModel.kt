@@ -3,19 +3,21 @@ package com.example.myapplication.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.domain.GetCardsUseCase
+import com.example.myapplication.domain.GetCurrentGameUseCase
 import com.example.myapplication.domain.NewGameUseCase
 import com.example.myapplication.domain.PlayCardUseCase
+import com.example.myapplication.domain.model.CardContent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class GameViewModel @Inject constructor(
+    private val getCurrentGameUseCase: GetCurrentGameUseCase,
     private val newGameUseCase: NewGameUseCase,
     private val getCardsUseCase: GetCardsUseCase,
     private val playCardUseCase: PlayCardUseCase,
@@ -26,27 +28,32 @@ class GameViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            getCardsUseCase().collect { newCards ->
-                _uiState.update {
-                    it.copy(cards = newCards.map { newCard ->
-                        CardUiState(
-                            id = newCard.id,
-                            label = newCard.label,
-                            isFlipped = newCard.isRevealed || newCard.isMatched
-                        )
-                    })
+            getCurrentGameUseCase().collect { game ->
+                if (game != null) {
+                    _uiState.update {
+                        it.copy(cards = game.cards.map { newCard ->
+                            CardUiState(
+                                id = newCard.id,
+                                label = (newCard.card.content as? CardContent.Text)?.text
+                                    ?: "Image?",
+                                isFlipped = newCard.isRevealed || newCard.isMatched
+                            )
+                        })
+                    }
                 }
             }
         }
     }
 
     fun newGame(size: Int) {
-        newGameUseCase(size)
+        viewModelScope.launch {
+            newGameUseCase()
+        }
     }
 
     fun playCard(card: CardUiState) {
         viewModelScope.launch {
-            playCardUseCase(getCardsUseCase().first(), card.id)
+            playCardUseCase(card.id)
         }
     }
 }

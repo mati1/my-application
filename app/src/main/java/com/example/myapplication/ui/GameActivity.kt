@@ -11,9 +11,16 @@ class GameActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         enableEdgeToEdge()
         setContent {
             GameScreen()
         }
+
+        val someLambdaWrapper = SomeLambdaWrapper(
+            NestedLambdaWrapper { CustomerColorScheme.color }
+        )
+        println("$someLambdaWrapper")
     }
 }
+
