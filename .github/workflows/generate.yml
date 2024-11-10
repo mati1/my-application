@@ -17,11 +17,4 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
           cache: 'gradle'
-      - run: ./gradlew generate
-      - name: Commit screenshot test changes
-        run: |
-          git config --global user.name "${GITHUB_ACTOR}"
-          git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
-          git add .
-          git commit -m "Update generated files"
-          git push
+      - uses: ./.github/generate
