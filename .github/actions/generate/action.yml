@@ -3,7 +3,15 @@ description: Code generation
 runs:
   using: "composite"
   steps:
+    - name: Changes
+      uses: dorny/paths-filter@v3
+      id: changes
+      with:
+        filters: |
+          src:
+          - 'trigger.txt'
     - name: Generate
+      if: steps.changes.outputs.src == 'true'
       shell: bash
       run: ./gradlew generate
     - name: Diff

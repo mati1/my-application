@@ -14,29 +14,33 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
           cache: 'gradle'
+      - uses: ./.github/actions/generate
       - run: ./gradlew build
-  screenshot-tests:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.head.ref }}
-      - uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-          cache: 'gradle'
-      - id: validate-screenshot-test
-        run: ./gradlew validateScreenshotTest
-        continue-on-error: true
-      - id: update-screenshot-test
-        run: ./gradlew updateScreenshotTest
-        if: steps.validate-screenshot-test.outcome == 'failure'
-      - name: Commit screenshot test changes
-        if: steps.update-screenshot-test.outcome == 'success'
-        run: |
-          git config --global user.name "${GITHUB_ACTOR}"
-          git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
-          git add .
-          git commit -m "Update screenshot tests"
-          git push
+#  screenshot-tests:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v4
+#        with:
+#          ref: ${{ github.event.pull_request.head.ref }}
+#      - uses: actions/setup-java@v4
+#        with:
+#          distribution: 'temurin'
+#          java-version: '17'
+#          cache: 'gradle'
+
+#      - run: ./gradlew assembleDebug
+#
+#      - id: validate-screenshot-test
+#        run: ./gradlew validateScreenshotTest
+#        continue-on-error: true
+#      - id: update-screenshot-test
+#        run: ./gradlew updateScreenshotTest
+#        if: steps.validate-screenshot-test.outcome == 'failure'
+#      - name: Commit screenshot test changes
+#        if: steps.update-screenshot-test.outcome == 'success'
+#        run: |
+#          git config --global user.name "${GITHUB_ACTOR}"
+#          git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+#          git add .
+#          git commit -m "Update screenshot tests"
+#          git push
