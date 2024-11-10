@@ -18,12 +18,12 @@ runs:
       id: diff
       shell: bash
       run: git diff --quiet ./uds/library/src || echo "changed=true" >> "$GITHUB_OUTPUT"
-    - name: Commit
-      shell: bash
-      if: steps.diff.outputs.changed == 'true'
-      run: |
-        git config --global user.name "${GITHUB_ACTOR}"
-        git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
-        git add .
-        git commit -m "Update generated files"
-        git push
+#    - name: Commit
+#      shell: bash
+#      if: steps.diff.outputs.changed == 'true'
+#      run: |
+#        git config --global user.name "${GITHUB_ACTOR}"
+#        git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+#        git add .
+#        git commit -m "Update generated files"
+#        git push
