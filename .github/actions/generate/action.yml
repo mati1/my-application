@@ -3,11 +3,14 @@ description: Code generation
 runs:
   steps:
     - name: Generate
+      shell: bash
       run: ./gradlew generate
     - name: Diff
       id: diff
+      shell: bash
       run: git diff --quiet ./uds/library/src || echo "changed=true" >> "$GITHUB_OUTPUT"
     - name: Commit
+      shell: bash
       if: steps.diff.outputs.changed == 'true'
       run: |
         git config --global user.name "${GITHUB_ACTOR}"
