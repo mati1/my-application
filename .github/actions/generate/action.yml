@@ -1,6 +1,7 @@
 name: Generate
 description: Code generation
 runs:
+  using: "composite"
   steps:
     - name: Generate
       shell: bash
