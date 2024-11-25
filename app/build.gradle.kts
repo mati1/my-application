@@ -4,7 +4,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.compose.compiler)
-    id("com.android.compose.screenshot") version "0.0.1-alpha07"
+    id("com.android.compose.screenshot") version "0.0.1-alpha08"
 //    id("com.google.gms.google-services")
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
